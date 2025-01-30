@@ -39,8 +39,8 @@ jobs:
         # run: docker build -t $GITHUB_SHA  .
         run: |
           docker build -t actions-app:${{ github.sha}} .
-          docker tag actions-app:${{ github.sha}} ${{ secrets.ECR_REPOSITORY_URI}}/actions-cicd:latest
-      #     docker tag actions-app:${{ github.sha}} ${{ secrets.DOCKERHUB_USERNAME }}/actions-cicd:latest
+          docker tag actions-app:${{ github.sha}} ${{ secrets.ECR_REPOSITORY_URI}}/actioncicd:latest
+      #     docker tag actions-app:${{ github.sha}} ${{ secrets.DOCKERHUB_USERNAME }}/actioncicd:latest
 
       # Trivy Scan
       - name: Trivy Scan
@@ -64,7 +64,7 @@ jobs:
       # Push image to Amazon ECR
       - name: Push image to Amazon ECR
         run: |
-          docker push ${{ secrets.ECR_REPOSITORY_URI}}/actions-cicd:latest
+          docker push ${{ secrets.ECR_REPOSITORY_URI}}/actioncicd:latest
         env:
           aws-access-key-id: ${{ secrets.ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -80,7 +80,7 @@ jobs:
       # # Push image to DockerHub
       # - name: Push image to DockerHub
       #   run: |
-      #     docker push ${{ secrets.DOCKERHUB_USERNAME }}/actions-cicd:latest
+      #     docker push ${{ secrets.DOCKERHUB_USERNAME }}/actioncicd:latest
 
       # # Update Kubeconfig
       # - name: Update kubeconfig
