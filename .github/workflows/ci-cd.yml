@@ -36,16 +36,16 @@ jobs:
       
       # Docker Image Build
       - name: Build Docker Image
-        run: docker build -t $GITHUB_SHA  .
-        # run: |
-        #   docker build -t actions-app:${{ github.sha}} .
-      #     docker tag actions-app:${{ github.sha}} ${{ secrets.ECR_REPOSITORY_URI}}/actions-cicd:latest
+        # run: docker build -t $GITHUB_SHA  .
+        run: |
+          docker build -t actions-app:${{ github.sha}} .
+          docker tag actions-app:${{ github.sha}} ${{ secrets.ECR_REPOSITORY_URI}}/actions-cicd:latest
       #     docker tag actions-app:${{ github.sha}} ${{ secrets.DOCKERHUB_USERNAME }}/actions-cicd:latest
 
       # Trivy Scan
       - name: Trivy Scan
-        run: docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy:latest image $GITHUB_SHA
-        # run: docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy:latest image actions-app:${{ github.sha}}
+        # run: docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy:latest image $GITHUB_SHA
+        run: docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy:latest image actions-app:${{ github.sha}}
       #   run: docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy:latest image actions-app:${{ github.sha}}
       
       # Set up AWS Credentials
@@ -61,14 +61,14 @@ jobs:
         run: |
           aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.ECR_REPOSITORY_URI }}
 
-      # # Push image to Amazon ECR
-      # - name: Push image to Amazon ECR
-      #   run: |
-      #     docker push ${{ secrets.ECR_REPOSITORY_URI}}/actions-cicd:latest
-      #   env:
-      #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      #     aws-region: ${{ secrets.AWS_REGION }}
+      # Push image to Amazon ECR
+      - name: Push image to Amazon ECR
+        run: |
+          docker push ${{ secrets.ECR_REPOSITORY_URI}}/actions-cicd:latest
+        env:
+          aws-access-key-id: ${{ secrets.ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
   
       # # Log in to DockerHub
       # - name: Log in to DockerHub
