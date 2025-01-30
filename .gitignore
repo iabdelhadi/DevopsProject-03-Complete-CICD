@@ -2,5 +2,5 @@
 k8s-manifests
 Run Jenkins Container.txt
 Run Github Actions.txt
-ci-cd.yml
+cicd.yml
 README.md
